@@ -7,6 +7,12 @@ const indexController = require("../controllers/indexController.js");
 const indexRouter = Router();
 
 // Main GET index route
-indexRouter.get("/", indexController.getAllItems);
+indexRouter.get("/", indexController.getAllBooks);
+
+// Show addItem form
+indexRouter.get("/add", indexController.getAddBookForm);
+
+// Post a new item
+indexRouter.post("/add", indexController.postAddBook);
 
 module.exports = indexRouter;
