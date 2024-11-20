@@ -1,8 +1,22 @@
 .header {
-  height: 70px;
+  height: 100px;
   background-color: rgb(107, 107, 174);
+  display: flex;
+  align-items: center; /* Vertically centers items */
+  padding: 0 1rem; /* Adds padding to the sides */
+  justify-content: space-between;
 }
 
-.navbar {
-  font-size: 1.5rem;
-  }
+.title {
+  display: flex;
+  flex-direction: column;
+}
+
+.header h2,
+.header span {
+  margin: 0; /* Remove default margin */
+}
+
+.header svg {
+  height: 50px;
+}
