@@ -26,3 +26,38 @@ svg {
   height: 100px;
   width: auto;
 }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+thead {
+  background-color: slateblue;
+  color: white;
+}
+th,
+td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+tr:hover {
+  background-color: #e8f5e9;
+  transition: background-color 0.3s ease;
+}
+td:nth-child(6) {
+  font-weight: bold;
+}
+td:nth-child(6):contains("true") {
+  color: green;
+}
+td:nth-child(6):contains("false") {
+  color: red;
+}

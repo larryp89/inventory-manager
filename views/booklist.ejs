@@ -4,24 +4,44 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="styles.css" />
-    <title>Document</title>
+    <title>Books List</title>
   </head>
   <body>
     <%- include('header') %> <%- include('navbar') %>
-    <h2><%= title %></h2>
-    <ul>
-      <% for( let detail of details) { %>
-      <li>
-        <%= detail.title %>, <%= detail.forename %> <%= detail.surname %>, <%=
-        detail.genre %> <%= detail.category %> <%= detail.condition %>, <%=
-        detail.is_available %>
-        <img
-          class="cover-image"
-          src="<%=detail.cover_image  %>"
-          alt="Book cover for <%= detail.title %>"
-        />
-      </li>
-      <% } %>
-    </ul>
+    <main>
+      <h2><%= title %></h2>
+      <table class="books-table">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Genre</th>
+            <th>Category</th>
+            <th>Condition</th>
+            <th>Available</th>
+            <th>Cover</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for (let detail of details) { %>
+          <tr>
+            <td><%= detail.title %></td>
+            <td><%= detail.forename %> <%= detail.surname %></td>
+            <td><%= detail.genre_name %></td>
+            <td><%= detail.category_name %></td>
+            <td><%= detail.condition %></td>
+            <td><%= detail.is_available ? "Available" : "Unavailable " %></td>
+            <td>
+              <img
+                class="cover-image"
+                src="<%= detail.cover_image %>"
+                alt="Book cover for <%= detail.title %>"
+              />
+            </td>
+          </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </main>
   </body>
 </html>
