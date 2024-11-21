@@ -1,7 +1,18 @@
-const { post } = require("../routes/indexRouter");
+const db = require("../db/queries");
 
-function getAllBooks(req, res) {
-  res.render("index");
+// async function getAllBooks(req, res) {
+//   const allbooks = await db.getAllBooks();
+//   console.log(allbooks);
+//   res.render("booklist", { title: "Book List", books: allbooks });
+// }
+
+async function getAllBookDetails(req, res) {
+  const allBookDetails = await db.getAllBookDetails();
+  console.log(allBookDetails);
+  res.render("booklist", {
+    title: "All Books",
+    details: allBookDetails,
+  });
 }
 
 function getAddBookForm(req, res) {
@@ -16,7 +27,7 @@ function postAddBook(req, res) {
 }
 
 module.exports = {
-  getAllBooks,
+  getAllBookDetails,
   getAddBookForm,
   postAddBook,
 };

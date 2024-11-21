@@ -14,15 +14,11 @@ const authors = [
   { forename: "Doris", surname: "Kearns Goodwin" },
 ];
 
-const borrowers = [
-  { name: "Alice Johnson", contact_info: 123456789 },
-  { name: "Bob Smith", contact_info: 987654321 },
-];
-
 const books = [
   {
     title: "Murder on the Orient Express",
-    cover_image: "",
+    cover_image:
+      "https://m.media-amazon.com/images/I/71ihbKf67RL._AC_UF894,1000_QL80_.jpg",
     author_name: { forename: "Agatha", surname: "Christie" },
     genre_name: "Mystery",
     condition: "New",
@@ -30,7 +26,8 @@ const books = [
   },
   {
     title: "Foundation",
-    cover_image: "",
+    cover_image:
+      "https://m.media-amazon.com/images/I/81LT+V9G4IL._AC_UF894,1000_QL80_.jpg",
     author_name: { forename: "Isaac", surname: "Asimov" },
     genre_name: "Sci-Fi",
     condition: "Used - Good",
@@ -38,7 +35,7 @@ const books = [
   },
   {
     title: "Steve Jobs",
-    cover_image: "",
+    cover_image: "https://m.media-amazon.com/images/I/81yP+dpbmeL.jpg",
     author_name: { forename: "Walter", surname: "Isaacson" },
     genre_name: "Biography",
     condition: "New",
@@ -46,7 +43,8 @@ const books = [
   },
   {
     title: "Team of Rivals",
-    cover_image: "",
+    cover_image:
+      "https://m.media-amazon.com/images/I/81GuQSEj44L._AC_UF894,1000_QL80_.jpg",
     author_name: { forename: "Doris", surname: "Kearns Goodwin" },
     genre_name: "History",
     condition: "Used - Acceptable",
@@ -58,6 +56,5 @@ module.exports = {
   categories,
   genres,
   authors,
-  borrowers,
   books,
 };

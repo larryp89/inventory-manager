@@ -7,38 +7,39 @@
 
 // Initial data
 
-const { categories, genres, authors, borrowers, books } = require("./seedData");
+const { categories, genres, authors, books } = require("./seedData");
 require("dotenv").config();
 
 const { Client } = require("pg");
 
 const SQL = `
 CREATE TABLE IF NOT EXISTS categories (
-id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,  
 name VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS genres (
 id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
 name VARCHAR(255) NOT NULL,
-category_id references categories (id)
+category_id INTEGER REFERENCES categories(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS authors (
 id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
 forename VARCHAR(255) NOT NULL,
-surname VARCHAR(255) NOT NULL
+surname VARCHAR(255) NOT NULL,
+UNIQUE (forename, surname)
 );
-
 
 CREATE TABLE IF NOT EXISTS books (
 id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
 title text NOT NULL,
-cover_image text,
-author_id REFERENCES authors (id),
-genre_id REFERENCES genres (id),
+cover_image TEXT,
+author_id INTEGER REFERENCES authors(id) ON DELETE CASCADE,
+genre_id INTEGER REFERENCES genres(id) ON DELETE CASCADE,
 condition VARCHAR(255) NOT NULL,
-is_available BOOL NOT NULL DEFAULT true
+is_available BOOL NOT NULL DEFAULT true,
+UNIQUE (title, author_id)
 );
 `;
 
@@ -132,7 +133,7 @@ async function main() {
     connectionString,
   });
   await client.connect();
-  await client.query(SQL); // Create the table if one doesn't exist
+  await client.query(SQL); // Create the tables if one doesn't exist
   await insertData(client);
   await client.end();
   console.log("done");

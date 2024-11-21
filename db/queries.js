@@ -2,9 +2,31 @@
 // Each pool.query is used to query the database
 const pool = require("./pool");
 
-async function getAllMessages() {
+async function getAllBooks() {
   // query returns a result object on which rows is a property
-  const { rows } = await pool.query("SELECT * FROM messages");
+  const { rows } = await pool.query("SELECT * FROM books");
+  console.log(rows);
+  return rows;
+}
+
+async function getAllAuthors() {
+  const { rows } = await pool.query("SELECT * FROM authors");
+  console.log(rows);
+  return rows;
+}
+
+async function getAllBookDetails() {
+  const { rows } = await pool.query(`SELECT
+  books.title,
+  authors.forename,
+  authors.surname,
+  genres.name AS genre_name,
+  categories.name AS category_name, books.condition, books.is_available, books.cover_image
+FROM books
+LEFT JOIN authors ON books.author_id = authors.id
+LEFT JOIN genres ON books.genre_id = genres.id
+LEFT JOIN categories ON genres.category_id = categories.id;
+`);
   return rows;
 }
 
@@ -27,8 +49,7 @@ async function deleteMessage(messageID) {
 }
 
 module.exports = {
-  getAllMessages,
-  postMessage,
-  findMessage,
-  deleteMessage,
+  getAllBooks,
+  getAllAuthors,
+  getAllBookDetails,
 };

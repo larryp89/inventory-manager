@@ -17,6 +17,12 @@
   margin: 0; /* Remove default margin */
 }
 
-.header svg {
+svg {
   height: 50px;
+}
+
+/* BOOKLIST */
+.cover-image {
+  height: 100px;
+  width: auto;
 }
