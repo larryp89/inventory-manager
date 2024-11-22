@@ -72,3 +72,52 @@ tbody tr:hover {
 td:nth-child(6) {
   font-weight: bold;
 }
+
+/* * Form Styling */
+h2 {
+  text-align: center;
+  color: #333;
+}
+.form-div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.book-form {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+.book-form label {
+  margin-top: 10px;
+  color: #555;
+}
+.book-form input,
+.book-form select {
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+.book-form button {
+  padding: 10px;
+  margin-top: 20px;
+  background-color: slateblue;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+.book-form button:hover {
+  background-color: #5a5aa5;
+  transition: background-color 0.3s ease;
+} /* Inspiration from the Table Styling */
+.cover-image {
+  height: 100px;
+}

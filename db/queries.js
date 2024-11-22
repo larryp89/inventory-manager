@@ -1,6 +1,12 @@
 // Manage the connections rather than open/close each time
 // Each pool.query is used to query the database
 const pool = require("./pool");
+const { Client } = require("pg"); // Use for transactions, i.e. inserting into multiple tables
+
+const connectionString =
+  //   If no commandline arguments provided, it updates the dev DB
+  process.argv[2] ||
+  `postgresql://${process.env.DEV_USER}:${process.env.DEV_PASSWORD}@${process.env.DEV_HOST}:${process.env.DEV_PORT}/${process.env.DEV_DB}`;
 
 async function getAllBooks() {
   // query returns a result object on which rows is a property
@@ -30,11 +36,60 @@ LEFT JOIN categories ON genres.category_id = categories.id;
   return rows;
 }
 
-async function postMessage(username, message, date) {
-  await pool.query(
-    "INSERT INTO messages (username, message, date) VALUES ($1, $2, $3)",
-    [username, message, date]
-  );
+async function postAddBook(
+  title,
+  authorForename,
+  authorSurname,
+  genre,
+  category,
+  condition,
+  availability,
+  cover_image
+) {
+  const client = new Client(connectionString);
+  await client.connect();
+  try {
+    // Begin transaction
+    await client.query("BEGIN");
+
+    // Select category ID based on category
+    // const categoryQuery = "SELECT id FROM categories WHERE name = $1";
+    // const categoryValue = [category];
+    // const catRes = await client.query(categoryQuery, categoryValue);
+    // const categoryID = catRes.rows[0].id;
+
+    // Select genre ID based on genre
+    const genreQuery = "SELECT id FROM genres WHERE name = $1";
+    const genreValue = [genre];
+    const genreID = (await client.query(genreQuery, genreValue)).rows[0].id;
+
+    // Insert into authors and obtain ID
+    const insertAuthorQuery =
+      "INSERT INTO authors (forename, surname) VALUES ($1, $2) RETURNING id";
+    const authorValues = [authorForename, authorSurname];
+    const authID = (await client.query(insertAuthorQuery, authorValues)).rows[0]
+      .id;
+
+    // Insert into books
+    const insertBookQuery =
+      "INSERT INTO books (title, cover_image, author_id, genre_id, condition, is_available) VALUES ($1, $2, $3, $4, $5, $6)";
+    const bookValues = [
+      title,
+      cover_image,
+      authID,
+      genreID,
+      condition,
+      availability,
+    ];
+    const res = await client.query(insertBookQuery, bookValues);
+
+    // Commit transaction
+    await client.query("COMMIT");
+    console.log("Data inserted successfully!");
+  } catch (err) {
+    await client.query("ROLLBACK"); // Rollback on error
+    console.error("Error inserting data:", err);
+  }
 }
 
 async function findMessage(messageID) {
@@ -52,4 +107,5 @@ module.exports = {
   getAllBooks,
   getAllAuthors,
   getAllBookDetails,
+  postAddBook,
 };

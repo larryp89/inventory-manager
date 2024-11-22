@@ -1,11 +1,5 @@
 const db = require("../db/queries");
 
-// async function getAllBooks(req, res) {
-//   const allbooks = await db.getAllBooks();
-//   console.log(allbooks);
-//   res.render("booklist", { title: "Book List", books: allbooks });
-// }
-
 async function getAllBookDetails(req, res) {
   const allBookDetails = await db.getAllBookDetails();
   console.log(allBookDetails);
@@ -19,10 +13,28 @@ function getAddBookForm(req, res) {
   res.render("addBookForm");
 }
 
-function postAddBook(req, res) {
-  const { title, author } = req.body;
-  console.log(title, author);
+async function postAddBook(req, res) {
+  const {
+    title,
+    forename,
+    surname,
+    genre,
+    category,
+    condition,
+    availability,
+    cover_image_url,
+  } = req.body;
   console.log("...Adding to DB");
+  await db.postAddBook(
+    title,
+    forename,
+    surname,
+    genre,
+    category,
+    condition,
+    availability,
+    cover_image_url
+  );
   res.redirect("/");
 }
 
