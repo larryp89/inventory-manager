@@ -1,10 +1,45 @@
 const categories = [{ name: "Fiction" }, { name: "Non-Fiction" }];
 
 const genres = [
+  // Fiction
   { name: "Mystery", category_name: "Fiction" },
   { name: "Sci-Fi", category_name: "Fiction" },
+  { name: "Fantasy", category_name: "Fiction" },
+  { name: "Romance", category_name: "Fiction" },
+  { name: "Thriller", category_name: "Fiction" },
+  { name: "Horror", category_name: "Fiction" },
+  { name: "Historical Fiction", category_name: "Fiction" },
+  { name: "Young Adult", category_name: "Fiction" },
+  { name: "Adventure", category_name: "Fiction" },
+  { name: "Dystopian", category_name: "Fiction" },
+  { name: "Graphic Novel", category_name: "Fiction" },
+  { name: "Literary Fiction", category_name: "Fiction" },
+  { name: "Magical Realism", category_name: "Fiction" },
+  { name: "Satire", category_name: "Fiction" },
+  { name: "Western", category_name: "Fiction" },
+  { name: "Short Stories", category_name: "Fiction" },
+
+  // Non-Fiction
   { name: "Biography", category_name: "Non-Fiction" },
   { name: "History", category_name: "Non-Fiction" },
+  { name: "Memoir", category_name: "Non-Fiction" },
+  { name: "Self-Help", category_name: "Non-Fiction" },
+  { name: "Health & Wellness", category_name: "Non-Fiction" },
+  { name: "True Crime", category_name: "Non-Fiction" },
+  { name: "Travel", category_name: "Non-Fiction" },
+  { name: "Science", category_name: "Non-Fiction" },
+  { name: "Technology", category_name: "Non-Fiction" },
+  { name: "Philosophy", category_name: "Non-Fiction" },
+  { name: "Politics", category_name: "Non-Fiction" },
+  { name: "Economics", category_name: "Non-Fiction" },
+  { name: "Education", category_name: "Non-Fiction" },
+  { name: "Parenting", category_name: "Non-Fiction" },
+  { name: "Spirituality", category_name: "Non-Fiction" },
+  { name: "Business", category_name: "Non-Fiction" },
+  { name: "Essays", category_name: "Non-Fiction" },
+  { name: "Cookbook", category_name: "Non-Fiction" },
+  { name: "Art & Photography", category_name: "Non-Fiction" },
+  { name: "Music", category_name: "Non-Fiction" },
 ];
 
 const authors = [

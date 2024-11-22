@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>+</title>
+    <title></title>
   </head>
   <body>
     <h2>Add a book to inventory</h2>
@@ -12,6 +12,21 @@
       <input type="text" id="title" name="title" />
       <label for="author">Author</label>
       <input type="text" id="author" name="author" />
+      <label for="genre">Genre</label>
+      <select name="genre" id="genre">
+        <option value="Mystery">Mystery</option>
+        <option value="Sci-fi">Sci-Fi</option>
+        <option value="Biography">Biography</option>
+        <option value="History">History</option>
+      </select>
+      <label for="category">Category</label>
+      <select name="category" id="category">
+        <option value="Fiction">Fiction</option>
+        <option value="Non-Fiction">Non-Fiction</option>
+      </select>
+      <label for="url">Cover Image URL</label>
+      <input type="url" id="url" />
+
       <button type="submit">Add to inventory</button>
     </form>
   </body>
