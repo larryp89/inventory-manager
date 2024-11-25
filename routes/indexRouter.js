@@ -12,7 +12,13 @@ indexRouter.get("/", indexController.getAllBookDetails);
 // Show addItem form
 indexRouter.get("/add", indexController.getAddBookForm);
 
+// Show updateBook form
+indexRouter.get("/update/:bookID", indexController.getUpdateBookForm);
+
 // Post a new item
-indexRouter.post("/add", indexController.postAddBook);
+indexRouter.post("/add", indexController.addBook);
+
+// Delete a book
+indexRouter.post("/delete", indexController.deleteBook);
 
 module.exports = indexRouter;

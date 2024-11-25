@@ -1,7 +1,7 @@
 // Manage the connections rather than open/close each time
 // Each pool.query is used to query the database
 const pool = require("./pool");
-const { Client } = require("pg"); // Use for transactions, i.e. inserting into multiple tables
+const { Client } = require("pg"); // Use for transactions, i.e. multiple concurrent all or nothing queries
 
 const connectionString =
   //   If no commandline arguments provided, it updates the dev DB
@@ -23,6 +23,7 @@ async function getAllAuthors() {
 
 async function getAllBookDetails() {
   const { rows } = await pool.query(`SELECT
+  books.id, 
   books.title,
   authors.forename,
   authors.surname,
@@ -36,12 +37,11 @@ LEFT JOIN categories ON genres.category_id = categories.id;
   return rows;
 }
 
-async function postAddBook(
+async function addBook(
   title,
   authorForename,
   authorSurname,
   genre,
-  category,
   condition,
   availability,
   cover_image
@@ -51,12 +51,6 @@ async function postAddBook(
   try {
     // Begin transaction
     await client.query("BEGIN");
-
-    // Select category ID based on category
-    // const categoryQuery = "SELECT id FROM categories WHERE name = $1";
-    // const categoryValue = [category];
-    // const catRes = await client.query(categoryQuery, categoryValue);
-    // const categoryID = catRes.rows[0].id;
 
     // Select genre ID based on genre
     const genreQuery = "SELECT id FROM genres WHERE name = $1";
@@ -92,20 +86,34 @@ async function postAddBook(
   }
 }
 
-async function findMessage(messageID) {
-  const { rows } = await pool.query("SELECT * FROM messages WHERE id = $1", [
-    messageID,
-  ]);
-  return rows[0];
+async function deleteBook(bookID) {
+  await pool.query("DELETE FROM books WHERE id = $1", [bookID]);
 }
 
-async function deleteMessage(messageID) {
-  await pool.query("DELETE FROM messages WHERE ID = $1", [messageID]);
+async function getBook(bookID) {
+  const { rows } = await pool.query(
+    `SELECT
+    books.title,
+    authors.forename,
+    authors.surname,
+    genres.name AS genre_name,
+    categories.name AS category_name, books.condition, books.is_available, books.cover_image
+  FROM books
+  LEFT JOIN authors ON books.author_id = authors.id
+  LEFT JOIN genres ON books.genre_id = genres.id
+  LEFT JOIN categories ON genres.category_id = categories.id
+  WHERE books.id = $1
+  `,
+    [bookID]
+  );
+  return rows;
 }
 
 module.exports = {
   getAllBooks,
   getAllAuthors,
   getAllBookDetails,
-  postAddBook,
+  addBook,
+  deleteBook,
+  getBook,
 };

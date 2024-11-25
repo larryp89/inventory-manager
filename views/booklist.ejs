@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="/styles.css" />
     <title>Books List</title>
   </head>
   <body>
@@ -20,6 +20,7 @@
             <th>Condition</th>
             <th>Available</th>
             <th>Cover</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -37,6 +38,17 @@
                 src="<%= detail.cover_image %>"
                 alt="Book cover for <%= detail.title %>"
               />
+            </td>
+            <td>
+              <form action="/delete" method="POST">
+                <!-- Hidden input field to store the book ID -->
+                <input type="hidden" name="id" value="<%= detail.id %>" />
+                <button class="delete-button">Delete</button>
+              </form>
+              <!-- Place id into URL so can then use to retrieve via POST -->
+              <form action="/update/<%=detail.id %>" method="GET">
+                <button class="update-button">Update</button>
+              </form>
             </td>
           </tr>
           <% } %>

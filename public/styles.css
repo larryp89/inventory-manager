@@ -73,7 +73,36 @@ td:nth-child(6) {
   font-weight: bold;
 }
 
-/* * Form Styling */
+.delete-button,
+.update-button {
+  padding: 10px 15px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 0.5rem;
+}
+
+.delete-button {
+  background-color: #ff4d4d;
+}
+
+.delete-button:hover {
+  background-color: #ff1a1a;
+  transition: background-color 0.3s ease;
+}
+
+.update-button {
+  background-color: rgb(23, 159, 23);
+}
+
+.update-button:hover {
+  background-color: rgb(26, 132, 26);
+  transition: background-color 0.3s ease;
+}
+
+/* * ADDBOOKFORM */
 h2 {
   text-align: center;
   color: #333;

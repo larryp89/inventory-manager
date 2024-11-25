@@ -13,7 +13,15 @@ function getAddBookForm(req, res) {
   res.render("addBookForm");
 }
 
-async function postAddBook(req, res) {
+async function getUpdateBookForm(req, res) {
+  const bookID = req.params.bookID;
+  const bookDetails = await db.getBook(bookID);
+  const book = bookDetails[0];
+  console.log(book);
+  res.render("updateBookForm", { book: book });
+}
+
+async function addBook(req, res) {
   const {
     title,
     forename,
@@ -25,7 +33,8 @@ async function postAddBook(req, res) {
     cover_image_url,
   } = req.body;
   console.log("...Adding to DB");
-  await db.postAddBook(
+
+  await db.addBook(
     title,
     forename,
     surname,
@@ -38,8 +47,17 @@ async function postAddBook(req, res) {
   res.redirect("/");
 }
 
+async function deleteBook(req, res) {
+  const { id } = req.body;
+  await db.deleteBook(id);
+  console.log("deleteing", id);
+  res.redirect("/");
+}
+
 module.exports = {
   getAllBookDetails,
   getAddBookForm,
-  postAddBook,
+  addBook,
+  deleteBook,
+  getUpdateBookForm,
 };
