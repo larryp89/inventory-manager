@@ -12,11 +12,11 @@ indexRouter.get("/", indexController.getAllBookDetails);
 // Show addItem form
 indexRouter.get("/add", indexController.getAddBookForm);
 
-// Show updateBook form
-indexRouter.get("/update/:bookID", indexController.getUpdateBookForm);
-
 // Post a new item
 indexRouter.post("/add", indexController.addBook);
+
+// Show updateBook form
+indexRouter.get("/update/:bookID", indexController.getUpdateBookForm);
 
 // Delete a book
 indexRouter.post("/delete", indexController.deleteBook);
@@ -24,5 +24,9 @@ indexRouter.post("/delete", indexController.deleteBook);
 // Update a book
 // NB cannot use /update as this is part of the other route
 indexRouter.post("/update-book", indexController.updateBook);
+
+// Add a new author
+indexRouter.get("/add-author", indexController.getAddAuthorForm);
+indexRouter.post("/add-author", indexController.addAuthor);
 
 module.exports = indexRouter;

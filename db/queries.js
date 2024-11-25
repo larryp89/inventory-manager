@@ -87,6 +87,28 @@ async function addBook(
   }
 }
 
+async function addAuthor(forename, surname) {
+  const client = new Client(connectionString);
+  await client.connect();
+  try {
+    // Begin transaction
+    await client.query("BEGIN");
+
+    // Insert new Author
+    const authQuery = "INSERT INTO authors (forename, surname) VALUES ($1, $2)";
+    const authValues = [forename, surname];
+    await client.query(authQuery, authValues);
+    // Commit transaction
+    await client.query("COMMIT");
+    console.log("Data inserted successfully!");
+  } catch (err) {
+    await client.query("ROLLBACK"); // Rollback on error
+    console.error("Error inserting data:", err);
+  } finally {
+    await client.end(); // Ensure the client connection is closed
+  }
+}
+
 async function deleteBook(bookID) {
   await pool.query("DELETE FROM books WHERE id = $1", [bookID]);
 }
@@ -182,4 +204,5 @@ module.exports = {
   deleteBook,
   getBook,
   updateBook,
+  addAuthor,
 };

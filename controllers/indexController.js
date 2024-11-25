@@ -12,6 +12,17 @@ function getAddBookForm(req, res) {
   res.render("addBookForm");
 }
 
+function getAddAuthorForm(req, res) {
+  res.render("addAuthor");
+}
+
+async function addAuthor(req, res) {
+  const forename = req.body.forename;
+  const surname = req.body.surname;
+  await db.addAuthor(forename, surname);
+  console.log("...author added successfully");
+  res.redirect("/");
+}
 async function getUpdateBookForm(req, res) {
   // Get the bookID from the route path
   const bookID = req.params.bookID;
@@ -88,4 +99,6 @@ module.exports = {
   deleteBook,
   getUpdateBookForm,
   updateBook,
+  getAddAuthorForm,
+  addAuthor,
 };
