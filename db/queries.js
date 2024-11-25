@@ -2,6 +2,7 @@
 // Each pool.query is used to query the database
 const pool = require("./pool");
 const { Client } = require("pg"); // Use for transactions, i.e. multiple concurrent all or nothing queries
+const { authors } = require("./seedData");
 
 const connectionString =
   //   If no commandline arguments provided, it updates the dev DB
@@ -93,11 +94,18 @@ async function deleteBook(bookID) {
 async function getBook(bookID) {
   const { rows } = await pool.query(
     `SELECT
+    books.id,
     books.title,
+    books.author_id,
     authors.forename,
     authors.surname,
-    genres.name AS genre_name,
-    categories.name AS category_name, books.condition, books.is_available, books.cover_image
+    genres.name AS genre_name, 
+    books.genre_id,
+    categories.name AS category_name,
+    categories.id AS category_id, 
+    books.condition, 
+    books.is_available, 
+    books.cover_image
   FROM books
   LEFT JOIN authors ON books.author_id = authors.id
   LEFT JOIN genres ON books.genre_id = genres.id
@@ -109,6 +117,63 @@ async function getBook(bookID) {
   return rows;
 }
 
+async function updateBook(
+  bookID,
+  author_id,
+  title,
+  forename,
+  surname,
+  genre,
+  condition,
+  availability,
+  cover_image_url
+) {
+  const client = new Client(connectionString);
+  await client.connect();
+  try {
+    // Begin transaction
+    await client.query("BEGIN");
+
+    // Update the book details
+    const bookQuery =
+      "UPDATE books SET title = $1, condition = $2, is_available = $3, cover_image = $4 WHERE id = $5";
+    const bookValues = [
+      title,
+      condition,
+      availability,
+      cover_image_url,
+      bookID,
+    ];
+    await client.query(bookQuery, bookValues);
+
+    // Update authors table with name change
+    const authorQuery =
+      "UPDATE authors SET forename = $1, surname = $2 WHERE id = $3";
+    const authorValues = [forename, surname, author_id];
+    await client.query(authorQuery, authorValues);
+
+    // Update genre ID in books table based on genre name
+    // First get the correct ID from genres
+    const genreIDQuery = "SELECT id FROM genres WHERE genres.name = $1";
+    const genreIDResult = await client.query(genreIDQuery, [genre]);
+    const newGenreID = genreIDResult.rows[0].id;
+
+    // Then update the book table
+    const updateGenreIDQuery = "UPDATE books SET genre_id = $1 WHERE id = $2";
+    const updateGenreValues = [newGenreID, bookID];
+    await client.query(updateGenreIDQuery, updateGenreValues);
+
+    // Commit transaction
+    await client.query("COMMIT");
+    console.log("Data inserted successfully!");
+  } catch (err) {
+    await client.query("ROLLBACK"); // Rollback on error
+    console.error("Error inserting data:", err);
+  } finally {
+    await client.end(); // Ensure the client connection is closed
+  }
+}
+
 module.exports = {
   getAllBooks,
   getAllAuthors,
@@ -116,4 +181,5 @@ module.exports = {
   addBook,
   deleteBook,
   getBook,
+  updateBook,
 };

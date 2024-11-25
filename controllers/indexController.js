@@ -2,7 +2,6 @@ const db = require("../db/queries");
 
 async function getAllBookDetails(req, res) {
   const allBookDetails = await db.getAllBookDetails();
-  console.log(allBookDetails);
   res.render("booklist", {
     title: "All Books",
     details: allBookDetails,
@@ -14,11 +13,41 @@ function getAddBookForm(req, res) {
 }
 
 async function getUpdateBookForm(req, res) {
+  // Get the bookID from the route path
   const bookID = req.params.bookID;
+  // Get the book details for the book ID from the db
   const bookDetails = await db.getBook(bookID);
   const book = bookDetails[0];
-  console.log(book);
   res.render("updateBookForm", { book: book });
+}
+
+async function updateBook(req, res) {
+  const {
+    id,
+    author_id,
+    title,
+    forename,
+    surname,
+    genre,
+    condition,
+    availability,
+    cover_image_url,
+  } = req.body;
+  console.log("...Updating DB");
+  console.log(req.body);
+  await db.updateBook(
+    id,
+    author_id,
+    title,
+    forename,
+    surname,
+    genre,
+    condition,
+    availability,
+    cover_image_url
+  );
+  console.log("...Update complete");
+  res.redirect("/");
 }
 
 async function addBook(req, res) {
@@ -27,7 +56,6 @@ async function addBook(req, res) {
     forename,
     surname,
     genre,
-    category,
     condition,
     availability,
     cover_image_url,
@@ -39,7 +67,6 @@ async function addBook(req, res) {
     forename,
     surname,
     genre,
-    category,
     condition,
     availability,
     cover_image_url
@@ -60,4 +87,5 @@ module.exports = {
   addBook,
   deleteBook,
   getUpdateBookForm,
+  updateBook,
 };

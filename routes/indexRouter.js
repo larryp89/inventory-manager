@@ -21,4 +21,8 @@ indexRouter.post("/add", indexController.addBook);
 // Delete a book
 indexRouter.post("/delete", indexController.deleteBook);
 
+// Update a book
+// NB cannot use /update as this is part of the other route
+indexRouter.post("/update-book", indexController.updateBook);
+
 module.exports = indexRouter;
