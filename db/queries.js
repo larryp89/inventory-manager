@@ -73,14 +73,15 @@ async function addBook(
     // Select genre ID based on genre
     const genreQuery = "SELECT id FROM genres WHERE name = $1";
     const genreValue = [genre];
-    const genreID = await client.query(genreQuery, genreValue).rows[0].id;
+    const genreResult = await client.query(genreQuery, genreValue);
+    const genreID = genreResult.rows[0].id;
 
     // Insert into authors and obtain ID
     const insertAuthorQuery =
       "INSERT INTO authors (forename, surname) VALUES ($1, $2) RETURNING id";
     const authorValues = [authorForename, authorSurname];
-    const authID = await client.query(insertAuthorQuery, authorValues).rows[0]
-      .id;
+    const authorResult = await client.query(insertAuthorQuery, authorValues);
+    const authID = authorResult.rows[0].id;
 
     // Insert into books
     const insertBookQuery =

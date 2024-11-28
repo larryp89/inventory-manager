@@ -86,6 +86,7 @@ async function addBook(req, res) {
     cover_image_url,
   } = req.body;
   console.log("...Adding to DB");
+  console.log("BOOK ADDED IS", genre);
 
   await db.addBook(
     title,

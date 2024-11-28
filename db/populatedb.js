@@ -27,8 +27,7 @@ category_id INTEGER REFERENCES categories(id) ON DELETE CASCADE
 CREATE TABLE IF NOT EXISTS authors (
 id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
 forename VARCHAR(255) NOT NULL,
-surname VARCHAR(255) NOT NULL,
-UNIQUE (forename, surname)
+surname VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS books (
@@ -38,8 +37,7 @@ cover_image TEXT,
 author_id INTEGER REFERENCES authors(id) ON DELETE CASCADE,
 genre_id INTEGER REFERENCES genres(id) ON DELETE CASCADE,
 condition VARCHAR(255) NOT NULL,
-is_available BOOL NOT NULL DEFAULT true,
-UNIQUE (title, author_id)
+is_available BOOL NOT NULL DEFAULT true
 );
 `;
 
