@@ -1,4 +1,5 @@
 const db = require("../db/queries");
+const { validationResult } = require("express-validator");
 
 async function getAllBookDetails(req, res) {
   const allBookDetails = await db.getAllBookDetails();
@@ -11,7 +12,7 @@ async function getAllBookDetails(req, res) {
 async function getAddBookForm(req, res) {
   const genres = await db.getAllGenres();
   const authors = await db.getAllAuthors();
-  res.render("addBookForm", { genres: genres, authors: authors });
+  res.render("addBookForm", { genres: genres, authors: authors, errors: [] });
 }
 
 function getAddAuthorForm(req, res) {
@@ -74,8 +75,24 @@ async function updateBook(req, res) {
   console.log("...Update complete");
   res.redirect("/");
 }
-
 async function addBook(req, res) {
+  // Check validation errors
+  const errors = validationResult(req);
+
+  // If there are validation errors
+  if (!errors.isEmpty()) {
+    const genres = await db.getAllGenres();
+    const authors = await db.getAllAuthors();
+
+    // Send back errors and form data
+    return res.status(400).render("addBookForm", {
+      genres: genres,
+      authors: authors,
+      errors: errors.array(),
+    });
+  }
+
+  // If validation passes, proceed with adding the book to DB
   const {
     title,
     forename,
@@ -85,9 +102,8 @@ async function addBook(req, res) {
     availability,
     cover_image_url,
   } = req.body;
-  console.log("...Adding to DB");
-  console.log("BOOK ADDED IS", genre);
 
+  console.log("...Adding to DB");
   await db.addBook(
     title,
     forename,
@@ -97,13 +113,15 @@ async function addBook(req, res) {
     availability,
     cover_image_url
   );
+
+  // After successful submission, redirect to the main page
   res.redirect("/");
 }
 
 async function deleteBook(req, res) {
   const { id } = req.body;
   await db.deleteBook(id);
-  console.log("deleteing", id);
+  console.log("deleting", id);
   res.redirect("/");
 }
 
