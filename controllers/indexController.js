@@ -12,7 +12,20 @@ async function getAllBookDetails(req, res) {
 async function getAddBookForm(req, res) {
   const genres = await db.getAllGenres();
   const authors = await db.getAllAuthors();
-  res.render("addBookForm", { genres: genres, authors: authors, errors: [] });
+
+  const uniqueAuthors = authors.filter(
+    (author, index, self) =>
+      index ===
+      self.findIndex(
+        (a) => a.forename === author.forename && a.surname === author.surname
+      )
+  );
+
+  res.render("addBookForm", {
+    genres: genres,
+    authors: uniqueAuthors,
+    errors: [],
+  });
 }
 
 function getAddAuthorForm(req, res) {
