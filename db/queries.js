@@ -38,6 +38,23 @@ LEFT JOIN categories ON genres.category_id = categories.id;
   return rows;
 }
 
+async function getAllGenres() {
+  const { rows } = await pool.query(`SELECT
+    genres.name
+    FROM genres
+  `);
+  return rows;
+}
+
+async function getAllAuthors() {
+  const { rows } = await pool.query(`SELECT
+  authors.forename,
+  authors.surname
+  FROM authors
+  `);
+  return rows;
+}
+
 async function addBook(
   title,
   authorForename,
@@ -56,13 +73,13 @@ async function addBook(
     // Select genre ID based on genre
     const genreQuery = "SELECT id FROM genres WHERE name = $1";
     const genreValue = [genre];
-    const genreID = (await client.query(genreQuery, genreValue)).rows[0].id;
+    const genreID = await client.query(genreQuery, genreValue).rows[0].id;
 
     // Insert into authors and obtain ID
     const insertAuthorQuery =
       "INSERT INTO authors (forename, surname) VALUES ($1, $2) RETURNING id";
     const authorValues = [authorForename, authorSurname];
-    const authID = (await client.query(insertAuthorQuery, authorValues)).rows[0]
+    const authID = await client.query(insertAuthorQuery, authorValues).rows[0]
       .id;
 
     // Insert into books
@@ -196,6 +213,29 @@ async function updateBook(
   }
 }
 
+async function addGenre(genre, category) {
+  const client = new Client(connectionString);
+  await client.connect();
+  try {
+    // Begin transaction
+    await client.query("BEGIN");
+
+    // Insert new Genre
+    const genreQuery = "INSERT INTO genres (name, category_id) VALUES ($1, $2)";
+    const genreValues = [genre, category];
+    await client.query(genreQuery, genreValues);
+
+    // Commit transaction
+    await client.query("COMMIT");
+    console.log("Data inserted successfully!");
+  } catch (err) {
+    await client.query("ROLLBACK"); // Rollback on error
+    console.error("Error inserting data:", err);
+  } finally {
+    await client.end(); // Ensure the client connection is closed
+  }
+}
+
 module.exports = {
   getAllBooks,
   getAllAuthors,
@@ -205,4 +245,7 @@ module.exports = {
   getBook,
   updateBook,
   addAuthor,
+  addGenre,
+  getAllGenres,
+  getAllAuthors,
 };

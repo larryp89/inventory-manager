@@ -8,12 +8,26 @@ async function getAllBookDetails(req, res) {
   });
 }
 
-function getAddBookForm(req, res) {
-  res.render("addBookForm");
+async function getAddBookForm(req, res) {
+  const genres = await db.getAllGenres();
+  const authors = await db.getAllAuthors();
+  res.render("addBookForm", { genres: genres, authors: authors });
 }
 
 function getAddAuthorForm(req, res) {
   res.render("addAuthor");
+}
+
+function getAddGenreForm(req, res) {
+  res.render("addGenreForm");
+}
+
+async function addGenre(req, res) {
+  const genre = req.body.genre;
+  const category = req.body.category;
+  await db.addGenre(genre, category);
+  console.log("...genre added successfully");
+  res.redirect("/");
 }
 
 async function addAuthor(req, res) {
@@ -101,4 +115,6 @@ module.exports = {
   updateBook,
   getAddAuthorForm,
   addAuthor,
+  getAddGenreForm,
+  addGenre,
 };

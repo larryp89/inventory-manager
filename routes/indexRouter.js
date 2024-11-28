@@ -29,4 +29,8 @@ indexRouter.post("/update-book", indexController.updateBook);
 indexRouter.get("/add-author", indexController.getAddAuthorForm);
 indexRouter.post("/add-author", indexController.addAuthor);
 
+// Add a new genre
+indexRouter.get("/add-genre", indexController.getAddGenreForm);
+indexRouter.post("/add-genre", indexController.addGenre);
+
 module.exports = indexRouter;
