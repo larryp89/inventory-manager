@@ -1,7 +1,7 @@
 // Add validations
 const { body } = require("express-validator");
 
-const validateUser = [
+const validateBook = [
   body("title").notEmpty().withMessage("Title is required").trim().escape(),
   body("forename")
     .notEmpty()
@@ -30,4 +30,21 @@ const validateUser = [
     .escape(),
 ];
 
-module.exports = validateUser;
+const validateAuthor = [
+  body("forename")
+    .notEmpty()
+    .withMessage("Author forename is required")
+    .trim()
+    .escape(),
+  body("surname")
+    .notEmpty()
+    .withMessage("Author surname is required")
+    .trim()
+    .escape(),
+];
+
+const validateGenre = [
+  body("genre").notEmpty().withMessage("Genre is required").trim().escape(),
+];
+
+module.exports = { validateBook, validateAuthor, validateGenre };

@@ -29,14 +29,19 @@ async function getAddBookForm(req, res) {
 }
 
 function getAddAuthorForm(req, res) {
-  res.render("addAuthor");
+  res.render("addAuthor", { errors: [] });
 }
 
 function getAddGenreForm(req, res) {
-  res.render("addGenreForm");
+  res.render("addGenreForm", { errors: [] });
 }
 
 async function addGenre(req, res) {
+  // form validation errors
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).render("addGenreForm", { errors: errors.array() });
+  }
   const genre = req.body.genre;
   const category = req.body.category;
   await db.addGenre(genre, category);
@@ -45,6 +50,11 @@ async function addGenre(req, res) {
 }
 
 async function addAuthor(req, res) {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).render("addAuthor", { errors: errors.array() });
+  }
+
   const forename = req.body.forename;
   const surname = req.body.surname;
   await db.addAuthor(forename, surname);

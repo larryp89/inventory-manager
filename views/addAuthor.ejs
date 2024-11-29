@@ -7,14 +7,15 @@
     <title>Add New Author</title>
   </head>
   <body>
-    <%- include('navbar') %>
+    <%- include('navbar') %> <%- include('partials/errors') %>
+
     <h2>Add a Book to Inventory</h2>
     <div class="form-div">
       <form action="/add-author" method="POST" class="book-form">
         <label for="author-forename">Author Forename</label>
-        <input type="text" id="author-forename" name="forename" required />
+        <input type="text" id="author-forename" name="forename" />
         <label for="author-surname">Author Surname</label>
-        <input type="text" id="author-surname" name="surname" required />
+        <input type="text" id="author-surname" name="surname" />
         <button type="submit">Add author to database</button>
       </form>
     </div>
