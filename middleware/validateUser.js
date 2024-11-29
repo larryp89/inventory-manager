@@ -27,7 +27,6 @@ const validateBook = [
     .isURL()
     .withMessage("Must be a valid URL")
     .trim()
-    .escape(),
 ];
 
 const validateAuthor = [
