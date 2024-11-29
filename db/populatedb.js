@@ -21,7 +21,7 @@ name VARCHAR(255) NOT NULL
 CREATE TABLE IF NOT EXISTS genres (
 id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
 name VARCHAR(255) NOT NULL,
-category_id INTEGER REFERENCES categories(id) ON DELETE CASCADE,
+category_id INTEGER REFERENCES categories(id) ON DELETE CASCADE
 CONSTRAINT unique_genre_name UNIQUE (name),
 
 );
@@ -137,7 +137,7 @@ async function main() {
   await client.query(SQL); // Create the tables if one doesn't exist
   await insertData(client);
   await client.end();
-  console.log("done");
+  console.log("done");  
 }
 
 main();
