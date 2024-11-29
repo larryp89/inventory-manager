@@ -168,7 +168,10 @@ async function updateBook(
   availability,
   cover_image_url
 ) {
-  const client = new Client(connectionString);
+  const client = new Client({
+    connectionString: process.env.DB_URL,
+    ssl: { rejectUnauthorized: false },
+  });
   await client.connect();
   try {
     // Begin transaction
