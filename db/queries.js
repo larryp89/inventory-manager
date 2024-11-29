@@ -16,12 +16,6 @@ async function getAllBooks() {
   return rows;
 }
 
-async function getAllAuthors() {
-  const { rows } = await pool.query("SELECT * FROM authors");
-  console.log(rows);
-  return rows;
-}
-
 async function getAllBookDetails() {
   const { rows } = await pool.query(`SELECT
   books.id, 
@@ -74,11 +68,11 @@ async function addBook(
     const genreQuery = "SELECT id FROM genres WHERE name = $1";
     const genreValue = [genre];
     const genreResult = await client.query(genreQuery, genreValue);
-    const genreID = genreResult.rows[0].id;
+    const genreID = genreResult.rows[0].id; // Obtain author_ID #
 
-    // Insert into authors and obtain ID
+    // Obtain author_ID
     const insertAuthorQuery =
-      "INSERT INTO authors (forename, surname) VALUES ($1, $2) RETURNING id";
+      "SELECT id FROM authors WHERE forename = $1 AND surname = $2";
     const authorValues = [authorForename, authorSurname];
     const authorResult = await client.query(insertAuthorQuery, authorValues);
     const authID = authorResult.rows[0].id;

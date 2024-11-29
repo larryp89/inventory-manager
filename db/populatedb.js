@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS genres (
 id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
 name VARCHAR(255) NOT NULL,
 category_id INTEGER REFERENCES categories(id) ON DELETE CASCADE,
-CONSTRAINT unique_genre_name UNIQUE (name)
+CONSTRAINT unique_genre_name UNIQUE (name),
 
 );
 
@@ -128,12 +128,11 @@ async function main() {
   const connectionString =
     //   If no commandline arguments provided, it updates the dev DB
     process.argv[2] ||
-    `postgresql://${process.env.DEV_USER}:${process.env.DEV_PASSWORD}@${process.env.DEV_HOST}:${process.env.DEV_PORT}/${process.env.DEV_DB}?sslmode=require`;
+    `postgresql://${process.env.DEV_USER}:${process.env.DEV_PASSWORD}@${process.env.DEV_HOST}:${process.env.DEV_PORT}/${process.env.DEV_DB}`;
+
   const client = new Client({
     connectionString,
-    ssl: { rejectUnauthorized: false },
   });
-
   await client.connect();
   await client.query(SQL); // Create the tables if one doesn't exist
   await insertData(client);
