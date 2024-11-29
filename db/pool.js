@@ -12,7 +12,9 @@ const pool = new Pool({
   user: process.env.DEV_USER,
   database: process.env.DEV_DB,
   password: process.env.DATABASE_PASSWORD || process.env.DEV_PASSWORD,
-  port: process.env.DEV_PORT,
+  port: process.env.DEV_PORT || 5432,
+  ssl: {
+    rejectUnauthorized: false, // This is generally required for most cloud-hosted databases
+  },
 });
-
 module.exports = pool;
