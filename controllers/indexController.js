@@ -61,6 +61,7 @@ async function addAuthor(req, res) {
   console.log("...author added successfully");
   res.redirect("/");
 }
+
 async function getUpdateBookForm(req, res) {
   // Get the bookID from the route path
   const bookID = req.params.bookID;
