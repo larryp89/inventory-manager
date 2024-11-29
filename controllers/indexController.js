@@ -57,10 +57,22 @@ async function getUpdateBookForm(req, res) {
   // Get the book details for the book ID from the db
   const bookDetails = await db.getBook(bookID);
   const book = bookDetails[0];
-  res.render("updateBookForm", { book: book });
+  res.render("updateBookForm", { book: book, errors: [] });
 }
 
 async function updateBook(req, res) {
+  // Check validation errors
+  const errors = validationResult(req);
+  // If there are validation errors
+  if (!errors.isEmpty()) {
+    const bookID = req.body.id;
+    // Get the book details for the book ID from the db
+    const bookDetails = await db.getBook(bookID);
+    const book = bookDetails[0];
+    return res
+      .status(400)
+      .render("updateBookForm", { book: book, errors: errors.array() });
+  }
   const {
     id,
     author_id,
@@ -73,7 +85,6 @@ async function updateBook(req, res) {
     cover_image_url,
   } = req.body;
   console.log("...Updating DB");
-  console.log(req.body);
   await db.updateBook(
     id,
     author_id,

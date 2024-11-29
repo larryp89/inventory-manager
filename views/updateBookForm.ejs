@@ -8,7 +8,9 @@
   </head>
   <body>
     <h2>Update Book in Inventory</h2>
-    
+    <%- include('navbar') %>
+    <%- include('partials/errors') %>
+
     <div class="form-div">
       <form action="/update-book" method="POST" class="book-form">
         <!-- Hidden value to extract ids -->
@@ -20,7 +22,6 @@
           type="text"
           id="title"
           name="title"
-          required
           value="<%= book.title %>"
         />
         <label for="author-forename">Author Forename</label>
@@ -28,7 +29,6 @@
           type="text"
           id="author-forename"
           name="forename"
-          required
           value="<%= book.forename %>"
         />
         <label for="author-surname">Author Surname</label>
@@ -36,32 +36,25 @@
           type="text"
           id="author-surname"
           name="surname"
-          required
           value="<%= book.surname %>"
         />
         <label for="genre">Genre</label>
-        <select name="genre" id="genre" required>
+        <select name="genre" id="genre" >
             <option value="Mystery" <%= book.genre_name === "Mystery" ? "selected" : "" %>>Mystery</option>
             <option value="Sci-Fi" <%= book.genre_name === "Sci-Fi" ? "selected" : "" %>>Sci-Fi</option>
             <option value="Biography" <%= book.genre_name === "Biography" ? "selected" : "" %>>Biography</option>
             <option value="History" <%= book.genre_name === "History" ? "selected" : "" %>>History</option>
         </select>
           
-        <!-- <label for="category">Category</label>
-        <select name="category" id="category" required>
-          <option value="Fiction" <%= book.category_name === "Fiction" ? "selected" : "" %>>Fiction</option>
-          <option value="Non-Fiction" <%= book.category_name === "Non-Fiction" ? "selected" : "" %>>Non-Fiction</option>
-        </select> -->
-        
         <label for="condition">Condition</label>
-        <select name="condition" id="condition" required>
+        <select name="condition" id="condition" >
           <option value="New" <%= book.condition === "New" ? "selected" : "" %>>New</option>
           <option value="Used - Good" <%= book.condition === "Used - Good" ? "selected" : "" %>>Used - Good</option>
           <option value="Used - Acceptable" <%= book.condition === "Used - Acceptable" ? "selected" : "" %>>Used - Acceptable</option>
         </select>
         
         <label for="availability">Availability</label>
-        <select name="availability" id="availability" required>
+        <select name="availability" id="availability" >
           <option value="true" <%= book.is_available === true ? "selected" : "" %>>Available</option>
           <option value="false" <%= book.is_available === false ? "selected" : "" %>>Unavailable</option>
         </select>
