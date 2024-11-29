@@ -128,13 +128,12 @@ async function main() {
   const connectionString =
     //   If no commandline arguments provided, it updates the dev DB
     process.argv[2] ||
-    `postgresql://${process.env.DEV_USER}:${process.env.DEV_PASSWORD}@${process.env.DEV_HOST}:${process.env.DEV_PORT}/${process.env.DEV_DB}`;
-
+    `postgresql://${process.env.DEV_USER}:${process.env.DEV_PASSWORD}@${process.env.DEV_HOST}:${process.env.DEV_PORT}/${process.env.DEV_DB}?sslmode=require`;
   const client = new Client({
     connectionString,
     ssl: { rejectUnauthorized: false },
   });
-  
+
   await client.connect();
   await client.query(SQL); // Create the tables if one doesn't exist
   await insertData(client);
