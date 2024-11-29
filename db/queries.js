@@ -58,7 +58,10 @@ async function addBook(
   availability,
   cover_image
 ) {
-  const client = new Client(connectionString);
+  const client = new Client({
+    connectionString: process.env.DB_URL,
+    ssl: { rejectUnauthorized: false },
+  });
   await client.connect();
   try {
     // Begin transaction
@@ -100,7 +103,10 @@ async function addBook(
 }
 
 async function addAuthor(forename, surname) {
-  const client = new Client(connectionString);
+  const client = new Client({
+    connectionString: process.env.DB_URL,
+    ssl: { rejectUnauthorized: false },
+  });
   await client.connect();
   try {
     // Begin transaction
@@ -209,7 +215,10 @@ async function updateBook(
 }
 
 async function addGenre(genre, category) {
-  const client = new Client(connectionString);
+  const client = new Client({
+    connectionString: process.env.DB_URL,
+    ssl: { rejectUnauthorized: false },
+  });
   await client.connect();
   try {
     // Begin transaction
